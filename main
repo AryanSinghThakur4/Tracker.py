@@ -1,0 +1,66 @@
+from tkinter import *
+import phonenumbers
+from phonenumbers import carrier
+from phonenumbers import geocoder
+from phonenumbers import timezone
+
+root = Tk()
+root.title("phone number tracker")
+root.geometry("365x584+300+200")
+root.resizable(False, False)
+root.configure(bg="#57adff")
+
+
+def track():
+            entry.num = entry.get()
+            number = phonenumbers.parse(entry.num)
+
+            locate = geocoder.description_for_number(number, "en")
+            country.config(text=locate)
+            service = carrier.name_for_number(number, "en")
+            sim.config(text=service)
+            time = timezone.time_zones_for_number(number)
+
+            logo = PhotoImage(file="logo.png")
+            label(root, image=logo, bg="57adff").place(x=120, y=35)
+
+            search = PhotoImage(file="search.png")
+            label(root, image=search, bg="57adff").place(x=5, y=245)
+
+            heading = label(root,
+                            text="track number",
+                            font="arial 25 bold",
+                            fg="white",
+                            bg="57adff")
+            heading.place(x=95, y=195)
+
+            entry = StringVar()
+            entry_num = Entry(root,
+                              textvariable=entry,
+                              width=18,
+                              justify='center',
+                              bd=0,
+                              font='arial 20 bold',
+                              bg='white',
+                              fg='black')
+            entry_num.place(x=55, y=260)
+
+            search_button = PhotoImage(file='search_btn.png')
+            btn = Button(root,
+                         image=search_button,
+                         cursor='hand2',
+                         bg='57adff',
+                         bd=0,
+                         command=track,
+                         activebackground='white')
+            btn.place(x=110, y=330)
+
+            country = Label(root,
+                            text="country",
+                            bg="57adff",
+                            fg="white",
+                            font="arial 14 bold")
+            country.place(x=50, y=475)
+
+
+root.mainloop()
